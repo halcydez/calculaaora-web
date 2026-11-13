@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora Básica - Suma de Dos Números</title>
+    <!-- Carga de Tailwind CSS para un diseño moderno y responsivo -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Fuente Google Fonts Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        /* Animación sutil para mensajes y resultados */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-4px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fade-in {
+            animation: fadeIn 0.25s ease-out forwards;
+        }
+    </style>
+</head>
+<body class="bg-slate-100 dark:bg-slate-900 text-slate-800 dark:text-slate-100 min-h-screen flex items-center justify-center p-4 transition-colors duration-300">
+
+    <!-- Contenedor principal tipo tarjeta centrada -->
+    <main class="w-full max-w-md bg-white dark:bg-slate-800 rounded-2xl shadow-xl border border-slate-200 dark:border-slate-700 overflow-hidden">
+        
+        <!-- Encabezado de la aplicación -->
+        <header class="bg-slate-50 dark:bg-slate-800/80 border-b border-slate-200 dark:border-slate-700 px-6 py-5 text-center">
+            <div class="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-emerald-100 dark:bg-emerald-900/50 text-emerald-600 dark:text-emerald-400 mb-3">
+                <!-- Icono SVG de calculadora/suma -->
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
+                </svg>
+            </div>
+            <h1 class="text-xl font-bold tracking-tight text-slate-900 dark:text-white">
+                Calculadora Básica
+            </h1>
+            <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">
+                Suma rápida de dos números
+            </p>
+        </header>
+
+        <!-- Cuerpo del formulario interactivo -->
+        <div class="p-6 space-y-5">
+            
+            <!-- Mensaje de alerta / validación (oculto por defecto) -->
+            <div id="alerta-error" role="alert" class="hidden rounded-xl bg-rose-50 dark:bg-rose-950/60 border border-rose-200 dark:border-rose-800 p-3.5 text-sm text-rose-700 dark:text-rose-300 flex items-start gap-2.5 animate-fade-in">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-rose-500 shrink-0 mt-0.5" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
+                </svg>
+                <span id="texto-error">Por favor, ingrese únicamente números válidos en ambos campos.</span>
+            </div>
+
+            <!-- Campo 1: Primer número -->
+            <div class="space-y-1.5">
+                <label for="num1" class="block text-sm font-medium text-slate-700 dark:text-slate-300">
+                    Ingrese el primer número:
+                </label>
+                <input 
+                    type="text" 
+                    inputmode="decimal"
+                    id="num1" 
+                    placeholder="Ej. 15.5"
+                    autocomplete="off"
+                    autofocus
+                    class="w-full px-4 py-3 text-center text-lg font-medium rounded-xl border border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-900/60 text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-all"
+                >
+            </div>
+
+            <!-- Campo 2: Segundo número -->
+            <div class="space-y-1.5">
+                <label for="num2" class="block text-sm font-medium text-slate-700 dark:text-slate-300">
+                    Ingrese el segundo número:
+                </label>
+                <input 
+                    type="text" 
+                    inputmode="decimal"
+                    id="num2" 
+                    placeholder="Ej. 24.5"
+                    autocomplete="off"
+                    class="w-full px-4 py-3 text-center text-lg font-medium rounded-xl border border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-900/60 text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-all"
+                >
+            </div>
+
+            <!-- Botones de acción: Sumar y Limpiar -->
+            <div class="grid grid-cols-2 gap-3 pt-2">
+                <button 
+                    type="button" 
+                    id="btn-sumar"
+                    class="w-full py-3 px-4 rounded-xl bg-emerald-600 hover:bg-emerald-700 active:scale-[0.98] text-white font-semibold shadow-sm shadow-emerald-600/20 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2 dark:focus:ring-offset-slate-800 transition-all flex items-center justify-center gap-2 cursor-pointer"
+                >
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                    </svg>
+                    Sumar
+                </button>
+
+                <button 
+                    type="button" 
+                    id="btn-limpiar"
+                    class="w-full py-3 px-4 rounded-xl bg-rose-600 hover:bg-rose-700 active:scale-[0.98] text-white font-semibold shadow-sm shadow-rose-600/20 focus:outline-none focus:ring-2 focus:ring-rose-500 focus:ring-offset-2 dark:focus:ring-offset-slate-800 transition-all flex items-center justify-center gap-2 cursor-pointer"
+                >
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                    </svg>
+                    Limpiar
+                </button>
+            </div>
+
+            <!-- Panel / Etiqueta destacada para el resultado -->
+            <div class="pt-2">
+                <div class="rounded-xl bg-slate-100 dark:bg-slate-900/80 border border-slate-200 dark:border-slate-700 p-4 text-center transition-all" id="panel-resultado">
+                    <span class="block text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1">
+                        Resultado de la suma
+                    </span>
+                    <p id="lbl-resultado" class="text-2xl font-bold text-slate-800 dark:text-slate-100 break-all">
+                        —
+                    </p>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Pie de página informativo -->
+        <footer class="bg-slate-50 dark:bg-slate-800/50 border-t border-slate-200 dark:border-slate-700 px-6 py-3 text-center">
+            <p class="text-xs text-slate-400 dark:text-slate-500">
+                Presiona <kbd class="px-1.5 py-0.5 text-xs font-semibold bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300 rounded">Enter</kbd> para calcular rápidamente
+            </p>
+        </footer>
+    </main>
+
+    <!-- Lógica de la aplicación en JavaScript -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Referencias a los elementos del DOM
+            const inputNum1 = document.getElementById('num1');
+            const inputNum2 = document.getElementById('num2');
+            const btnSumar = document.getElementById('btn-sumar');
+            const btnLimpiar = document.getElementById('btn-limpiar');
+            const lblResultado = document.getElementById('lbl-resultado');
+            const panelResultado = document.getElementById('panel-resultado');
+            const alertaError = document.getElementById('alerta-error');
+            const textoError = document.getElementById('texto-error');
+
+            /**
+             * Muestra un mensaje de error visual en la interfaz
+             * @param {string} mensaje - Texto explicativo del error
+             */
+            function mostrarError(mensaje) {
+                textoError.textContent = mensaje;
+                alertaError.classList.remove('hidden');
+                
+                // Restaurar estilo neutro en el panel de resultado
+                panelResultado.classList.remove('bg-emerald-50', 'dark:bg-emerald-950/40', 'border-emerald-300', 'dark:border-emerald-800');
+                lblResultado.classList.remove('text-emerald-700', 'dark:text-emerald-400');
+                lblResultado.textContent = '—';
+            }
+
+            /**
+             * Oculta el mensaje de error si estaba visible
+             */
+            function ocultarError() {
+                alertaError.classList.add('hidden');
+            }
+
+            /**
+             * Valida los datos ingresados, realiza la suma y actualiza la etiqueta de resultado
+             */
+            function sumar() {
+                try {
+                    ocultarError();
+
+                    // Obtener valores limpiando espacios y permitiendo coma decimal como punto
+                    const valor1Str = inputNum1.value.trim().replace(',', '.');
+                    const valor2Str = inputNum2.value.trim().replace(',', '.');
+
+                    // Verificar si alguno de los cuadros está vacío
+                    if (valor1Str === '' || valor2Str === '') {
+                        mostrarError('Por favor, complete ambos cuadros de texto antes de sumar.');
+                        if (valor1Str === '') {
+                            inputNum1.focus();
+                        } else {
+                            inputNum2.focus();
+                        }
+                        return;
+                    }
+
+                    // Convertir a número decimal
+                    const num1 = Number(valor1Str);
+                    const num2 = Number(valor2Str);
+
+                    // Verificar si son números válidos y finitos
+                    if (isNaN(num1) || isNaN(num2) || !isFinite(num1) || !isFinite(num2)) {
+                        mostrarError('Error de entrada: Ingrese únicamente números válidos en ambos campos.');
+                        return;
+                    }
+
+                    // Calcular la suma evitando imprecisiones típicas de punto flotante (ej. 0.1 + 0.2)
+                    const suma = parseFloat((num1 + num2).toPrecision(12));
+
+                    // Formatear resultado para lectura limpia
+                    lblResultado.textContent = suma;
+
+                    // Resaltar visualmente el panel de resultado exitoso
+                    panelResultado.classList.add('bg-emerald-50', 'dark:bg-emerald-950/40', 'border-emerald-300', 'dark:border-emerald-800');
+                    lblResultado.classList.add('text-emerald-700', 'dark:text-emerald-400');
+
+                } catch (error) {
+                    mostrarError('Ocurrió un error inesperado al procesar los números.');
+                }
+            }
+
+            /**
+             * Limpia los cuadros de texto, reinicia el resultado y devuelve el foco al primer cuadro
+             */
+            function limpiar() {
+                ocultarError();
+                inputNum1.value = '';
+                inputNum2.value = '';
+                
+                // Reiniciar etiqueta y estilos del panel de resultado
+                lblResultado.textContent = '—';
+                panelResultado.classList.remove('bg-emerald-50', 'dark:bg-emerald-950/40', 'border-emerald-300', 'dark:border-emerald-800');
+                lblResultado.classList.remove('text-emerald-700', 'dark:text-emerald-400');
+                
+                // Enfocar el primer cuadro para ingresar nuevos datos inmediatamente
+                inputNum1.focus();
+            }
+
+            // Asignación de eventos a los botones
+            btnSumar.addEventListener('click', sumar);
+            btnLimpiar.addEventListener('click', limpiar);
+
+            // Soporte para presionar la tecla Enter en cualquiera de los dos cuadros de entrada
+            [inputNum1, inputNum2].forEach(input => {
+                input.addEventListener('keydown', (evento) => {
+                    if (evento.key === 'Enter') {
+                        evento.preventDefault();
+                        sumar();
+                    }
+                });
+
+                // Ocultar alerta de error automáticamente cuando el usuario empieza a corregir
+                input.addEventListener('input', () => {
+                    if (!alertaError.classList.contains('hidden')) {
+                        ocultarError();
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
